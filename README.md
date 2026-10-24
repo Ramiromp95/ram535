@@ -68,8 +68,6 @@ flowchart LR
 
 Cada cuaderno es una única página HTML que funciona sin servidor, sin registro y sin seguimiento. Las notas personales se guardan solo en el navegador de quien las escribe.
 
-## La IA
-
 ### Un ejercicio diario
 
 Los cuadernos no son un trabajo terminado. Son mi cuaderno de estudio y crecen a medida que aprendo.
@@ -90,6 +88,8 @@ Los cuadernos no son un trabajo terminado. Son mi cuaderno de estudio y crecen a
 - Los cuadernos tienen secciones de repaso y test, separadas del contenido, para comprobar lo aprendido.
 
 Los cuadernos los mantengo en mi entorno de trabajo y aquí publico copias actualizadas. El historial de la carpeta `docs` refleja esa evolución.
+
+## La IA
 
 ### Para qué sirve
 
