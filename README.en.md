@@ -68,6 +68,27 @@ flowchart LR
 
 Each notebook is a single HTML page that works without a server, without sign-up and without tracking. Personal notes are stored only in the browser of whoever writes them.
 
+### A daily exercise
+
+The notebooks are not finished work. They are my study notebook and they grow as I learn.
+
+| Notebook | How I work on it |
+|---|---|
+| Threat Dossier | Expanded daily with current attacks, campaigns and tools, explained from a threat hunter's point of view |
+| Study Map | Every lab I complete becomes a lesson with my own notes |
+| MITRE Notebook | My way of learning the MITRE frameworks with my own cards, updated with every new ATT&CK release |
+| CVE Book | I add relevant vulnerabilities and review their priority when EPSS or the KEV catalogue changes |
+
+### How they feed back into each other
+
+- Concepts from each lab in the study map are added to the dossier glossary.
+- Attacks in the dossier and vulnerabilities in the CVE book are linked to their MITRE techniques.
+- The four notebooks make up the AI library, which cross-checks them against official sources.
+- What I discover with the AI goes back into the notebooks as new entries.
+- The notebooks include review and quiz sections, kept apart from the content, to test what I have learned.
+
+I maintain the notebooks in my own working environment and publish updated copies here. The history of the `docs` folder shows how they evolve.
+
 ## The AI
 
 ### What it does
