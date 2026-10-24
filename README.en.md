@@ -87,7 +87,7 @@ The notebooks are not finished work. They are my study notebook and they grow as
 - What I discover with the AI goes back into the notebooks as new entries.
 - The notebooks include review and quiz sections, kept apart from the content, to test what I have learned.
 
-I maintain the notebooks in my own working environment and publish updated copies here. The history of the `docs` folder shows how they evolve.
+I maintain the notebooks daily in my own working environment. What is published here is a snapshot of their state.
 
 ## The AI
 
