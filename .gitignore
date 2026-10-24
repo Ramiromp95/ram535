@@ -1,0 +1,32 @@
+# Entorno de Python y cachés
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Datos personales que genera el programa
+memoria/
+registro/
+copias/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Biblioteca local
+biblioteca/
+
+# Fichas de bug bounty (confidenciales). Solo se sube la plantilla
+app/bugbounty/*
+!app/bugbounty/_plantilla.txt
+
+# Claves
+clave_buscador.txt
+*.key
+.env
+
+# Copias y restos de Windows
+*.copia*
+*.bak
+Thumbs.db
+desktop.ini
