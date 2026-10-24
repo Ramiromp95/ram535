@@ -12,8 +12,10 @@
 :root{--bg:#EEF1F3;--grid:#DCE2E7;--card:#F9FAFB;--text:#162033;--muted:#56627A;--line:#C7CFD8;--accent:#1C68A3}
 @media (prefers-color-scheme:dark){:root{--bg:#10161F;--grid:#18212D;--card:#151D28;--text:#E4E9F0;--muted:#9AA6B8;--line:#2A3544;--accent:#5DADEB}}
 *{box-sizing:border-box}
-body{margin:0;background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;color:var(--text);font:16px/1.6 "Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{margin:0;background-color:var(--bg);color:var(--text);font:16px/1.6 "Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 main{max-width:880px;margin:0 auto;padding:72px 20px 56px}
+header{position:relative;isolation:isolate}
+header::before{content:"";position:absolute;inset:-72px -60px -160px;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:32px 32px;opacity:.6;-webkit-mask-image:radial-gradient(ellipse 70% 100% at 30% 0%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 70% 100% at 30% 0%,#000 20%,transparent 75%);pointer-events:none;z-index:-1}
 .eyebrow{font:600 12px/1 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 h1{font-size:clamp(40px,7vw,64px);line-height:1;margin:14px 0 18px;letter-spacing:-.02em;font-weight:800;font-stretch:85%}
 .lead{color:var(--muted);max-width:60ch;margin:0 0 48px}
@@ -29,9 +31,11 @@ footer p{margin:0 0 6px}
 </head>
 <body>
 <main>
-  <div class="eyebrow">RAM535 · Cuadernos</div>
-  <h1>Cuadernos de ciberseguridad</h1>
-  <p class="lead">Material de estudio que construyo y mantengo mientras me formo en threat hunting, ciberinteligencia y respuesta a incidentes. Son páginas interactivas, sin registro y sin seguimiento, y forman la biblioteca de RAM535, mi asistente de ciberseguridad con IA local.</p>
+  <header>
+    <div class="eyebrow">RAM535 · Cuadernos</div>
+    <h1>Cuadernos de ciberseguridad</h1>
+    <p class="lead">Material de estudio que construyo y mantengo mientras me formo en threat hunting, ciberinteligencia y respuesta a incidentes. Son páginas interactivas, sin registro y sin seguimiento, y forman la biblioteca de RAM535, mi asistente de ciberseguridad con IA local.</p>
+  </header>
 
   <div class="grid">
     <a class="card" href="dossier-de-amenazas/">
