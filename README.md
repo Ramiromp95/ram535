@@ -87,7 +87,7 @@ Los cuadernos no son un trabajo terminado. Son mi cuaderno de estudio y crecen a
 - Lo que descubro con la IA vuelve a los cuadernos como nuevas entradas.
 - Los cuadernos tienen secciones de repaso y test, separadas del contenido, para comprobar lo aprendido.
 
-Los cuadernos los mantengo en mi entorno de trabajo y aquí publico copias actualizadas. El historial de la carpeta `docs` refleja esa evolución.
+Los cuadernos los mantengo a diario en mi entorno de trabajo. Lo publicado aquí es una muestra de su estado.
 
 ## La IA
 
