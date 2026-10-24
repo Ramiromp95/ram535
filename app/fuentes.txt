@@ -1,0 +1,54 @@
+# Mapa de fuentes de RAM535
+# Le dice a la IA dónde empezar a buscar cada cosa. Solo lo edita el usuario.
+# Cada fuente empieza con su nombre entre corchetes. Debajo, una línea que explica
+# para qué sirve y las páginas de partida, una por línea.
+# {ID} o {número} son huecos que rellena la IA.
+# Una dirección que no esté en lista_blanca.txt se descarta sola.
+# Para vulnerabilidades la IA usa buscar_cve y para noticias usa noticias.
+
+[MITRE ATT&CK]
+Grupos APT, técnicas y subtécnicas, tácticas, software malicioso, campañas y mitigaciones.
+https://attack.mitre.org/groups/
+https://attack.mitre.org/groups/{ID}/
+https://attack.mitre.org/techniques/enterprise/
+https://attack.mitre.org/techniques/{ID}/
+https://attack.mitre.org/tactics/enterprise/
+https://attack.mitre.org/software/
+https://attack.mitre.org/campaigns/
+https://attack.mitre.org/mitigations/enterprise/
+
+[MITRE D3FEND]
+Contramedidas defensivas y cómo se relacionan con las técnicas de ataque.
+https://d3fend.mitre.org/
+
+[MITRE CAR]
+Analíticas de detección basadas en ATT&CK.
+https://car.mitre.org/analytics/
+
+[OWASP]
+Top 10 de riesgos en aplicaciones web y proyectos de seguridad de aplicaciones.
+https://owasp.org/www-project-top-ten/
+https://owasp.org/projects/
+
+[Microsoft Learn]
+Cursos oficiales de Microsoft en español, por ejemplo identidad con Microsoft Entra ID.
+https://learn.microsoft.com/es-es/training/paths/implement-identity-management-solution/
+https://learn.microsoft.com/es-es/credentials/certifications/identity-and-access-administrator/
+
+[IETF]
+Estándares de internet (RFC) por número.
+https://datatracker.ietf.org/doc/rfc{número}/
+
+[OWASP WSTG]
+Guía oficial de pruebas de seguridad web. Qué probar y cómo en cada tipo de fallo. Base para bug bounty.
+https://owasp.org/www-project-web-security-testing-guide/stable/
+
+[OWASP API Security]
+Los 10 riesgos principales de seguridad en APIs.
+https://owasp.org/API-Security/editions/2023/en/0x11-t10/
+
+[Tor Project]
+Fuente oficial sobre Tor, el navegador Tor, los servicios onion y cómo usarlos de forma segura.
+https://support.torproject.org/
+https://www.torproject.org/download/
+https://community.torproject.org/onion-services/

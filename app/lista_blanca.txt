@@ -1,0 +1,57 @@
+# Lista blanca de RAM535
+# Una entrada por línea. Las líneas que empiezan por # son notas.
+# Solo el nombre del sitio permite el sitio entero.
+# Nombre y ruta permiten solo lo que empiece por esa ruta.
+# Este archivo solo lo edita el usuario. La IA no puede escribirlo.
+
+# Buscador
+
+
+# Vulnerabilidades
+services.nvd.nist.gov
+www.cisa.gov/known-exploited-vulnerabilities
+www.cisa.gov/sites/default/files/feeds/
+api.first.org
+www.exploit-db.com/google-hacking-database
+hackerone.com/hacktivity
+hackerone.com/reports/
+
+# MITRE
+attack.mitre.org
+car.mitre.org
+d3fend.mitre.org
+atlas.mitre.org
+aadapt.mitre.org
+
+# Informes y noticias (por RSS)
+thedfirreport.com
+unit42.paloaltonetworks.com
+www.darkreading.com
+thehackernews.com
+www.bleepingcomputer.com
+krebsonsecurity.com
+feeds.feedburner.com/TheHackersNews
+
+# Referencia
+owasp.org
+datatracker.ietf.org/doc/
+www.iana.org
+data.iana.org
+www.eff.org
+learn.microsoft.com/es-es/credentials/
+learn.microsoft.com/es-es/training/
+learn.microsoft.com/api/catalog/
+
+# Privacidad y anonimato (ajuste 7.5b, aprobado por el usuario el 22/10/2026)
+www.torproject.org
+support.torproject.org
+community.torproject.org
+
+# Herramientas
+# Buscador de internet (ajuste 7.3c). Solo la ruta de búsqueda de su API para programas
+api.keenable.ai/v1/search
+www.wirewiki.com
+deepwiki.com
+
+# Informes de grupos APT de Kaspersky (paso 12.7, aprobado por el usuario el 22/10/2026)
+securelist.com

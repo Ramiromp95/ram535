@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src 'unsafe-inline'; script-src __HUELLA__; form-action 'none'; base-uri 'none'">
+  <title>RAM535</title>
+  <style>
+    :root {
+      --fondo: #0f1115;
+      --panel: #171a21;
+      --borde: #262a33;
+      --texto: #e6e8eb;
+      --suave: #8b919c;
+      --acento: #f5a524;
+      --barra: #333844;
+      --bien: #4ade80;
+      --mal: #f87171;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    [hidden] { display: none !important; }
+
+    /* Barras de desplazamiento */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--barra); border-radius: 8px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4a505e; }
+    ::-webkit-scrollbar-corner { background: transparent; }
+
+    body {
+      background: var(--fondo);
+      color: var(--texto);
+      font-family: "Segoe UI", sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Cabecera */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--borde);
+    }
+    .marca {
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+    .lado { display: flex; align-items: center; gap: 20px; }
+    .estado { color: var(--suave); font-size: 13px; display: flex; align-items: center; }
+    .punto {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--acento);
+      margin-right: 8px;
+    }
+    .punto.activo { animation: latido 1.2s ease-in-out infinite; }
+    @keyframes latido { 50% { opacity: 0.25; } }
+    .boton-suave {
+      background: none;
+      border: 1px solid var(--borde);
+      color: var(--suave);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .boton-suave:hover { color: var(--texto); border-color: var(--suave); }
+    .boton-suave[aria-expanded="true"] { color: var(--texto); border-color: var(--suave); }
+    #seguridad { display: flex; align-items: center; gap: 8px; }
+    .punto-seguridad {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--suave);
+    }
+    .punto-seguridad.bien { background: var(--bien); }
+    .punto-seguridad.mal { background: var(--mal); }
+
+    /* Zona bajo la cabecera. Chat a la izquierda y panel a la derecha */
+    .cuerpo { flex: 1; display: flex; min-height: 0; }
+    .chat { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+    /* Conversación */
+    main {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 32px max(32px, calc((100% - 720px) / 2));
+    }
+    .bienvenida { margin: auto 0; text-align: center; }
+    h1 { font-size: 28px; font-weight: 600; }
+    .mensaje { font-size: 15px; line-height: 1.65; }
+    .tu {
+      align-self: flex-end;
+      max-width: 80%;
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: 12px 12px 4px 12px;
+      padding: 10px 14px;
+      white-space: pre-wrap;
+    }
+
+    /* Razonamiento plegable */
+    .pensamiento {
+      margin-bottom: 14px;
+      border-left: 2px solid var(--borde);
+      padding-left: 12px;
+    }
+    .pensamiento summary {
+      color: var(--suave);
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .pensamiento summary:hover { color: var(--acento); }
+    .texto-pensamiento {
+      color: var(--suave);
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      margin-top: 8px;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    /* Pasos del agente. Tarjetas de permiso y lecturas */
+    .pasos { display: flex; flex-direction: column; gap: 10px; }
+    .pasos:not(:empty) { margin-bottom: 14px; }
+    .tarjeta {
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-left: 2px solid var(--acento);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+    .tarjeta.automatica { border-left-color: var(--borde); }
+    .tarjeta.bloqueo { border-left-color: var(--mal); }
+    .tarjeta-confirmacion { width: 100%; }
+    .tarjeta-confirmacion .tarjeta-botones { margin-top: 0; }
+    .tarjeta-linea {
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 12px;
+      background: var(--fondo);
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin: 6px 0 10px;
+      word-break: break-all;
+    }
+    .tarjeta-titulo { font-weight: 600; }
+    .tarjeta-texto { color: var(--suave); margin-top: 4px; }
+    .tarjeta-direcciones { list-style: none; margin-top: 8px; }
+    .tarjeta-direcciones li {
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 12px;
+      color: var(--suave);
+      word-break: break-all;
+    }
+    .tarjeta-direcciones li + li { margin-top: 2px; }
+    .tarjeta-botones { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+    .boton-aprobar {
+      background: var(--acento);
+      color: var(--fondo);
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .boton-aprobar:hover { opacity: 0.85; }
+    .tarjeta-estado { color: var(--suave); }
+    .nota-paso {
+      color: var(--suave);
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .lectura { border-left: 2px solid var(--borde); padding-left: 12px; }
+    .lectura summary {
+      color: var(--suave);
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .lectura summary:hover { color: var(--acento); }
+    .texto-lectura {
+      color: var(--suave);
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      margin-top: 8px;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    /* Barra fina y separada del texto en razonamiento y lecturas */
+    .texto-pensamiento,
+    .texto-lectura { padding-right: 14px; }
+    .texto-pensamiento::-webkit-scrollbar,
+    .texto-lectura::-webkit-scrollbar { width: 4px; }
+
+    /* Pie de fuentes, escrito por el código */
+    .pie {
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 1px solid var(--borde);
+      color: var(--suave);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .pie-titulo { font-weight: 600; }
+    .pie-titulo:not(:first-child) { margin-top: 8px; }
+    .pie ul { list-style: none; }
+    .pie li { word-break: break-all; }
+
+    /* Formato de la respuesta */
+    .respuesta > * + * { margin-top: 12px; }
+    .respuesta h3 { font-size: 17px; font-weight: 600; }
+    .respuesta h4 { font-size: 15px; font-weight: 600; }
+    .respuesta ul, .respuesta ol { padding-left: 22px; }
+    .respuesta li + li { margin-top: 4px; }
+    .respuesta li::marker { color: var(--acento); }
+    .respuesta strong { font-weight: 600; color: #ffffff; }
+    .respuesta code {
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 13px;
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    .respuesta pre {
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: 8px;
+      padding: 12px 14px;
+      overflow-x: auto;
+    }
+    .respuesta pre code { background: none; border: none; padding: 0; white-space: pre; }
+    .respuesta hr { border: none; border-top: 1px solid var(--borde); }
+    .error { color: #f87171; font-size: 14px; }
+
+    /* Botón de copiar bajo cada respuesta */
+    .acciones { margin-top: 10px; }
+    .boton-copiar {
+      background: none;
+      border: none;
+      color: var(--suave);
+      font: inherit;
+      font-size: 12px;
+      padding: 2px 0;
+      cursor: pointer;
+    }
+    .boton-copiar:hover { color: var(--acento); }
+
+    /* Caja de escritura */
+    footer { padding: 20px 32px 24px; border-top: 1px solid var(--borde); }
+    .entrada {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 10px 10px 10px 16px;
+    }
+    .entrada:focus-within { border-color: #3a3f4b; }
+    textarea {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      resize: none;
+      color: var(--texto);
+      font: inherit;
+      font-size: 14px;
+      line-height: 20px;
+      max-height: 200px;
+      padding: 7px 0;
+    }
+    #enviar {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: none;
+      padding: 0;
+      background: var(--acento);
+      color: var(--fondo);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    #enviar svg { display: block; }
+    #enviar:hover { opacity: 0.85; }
+    #enviar:disabled { opacity: 0.3; cursor: default; }
+    #enviar svg[hidden] { display: none; }
+    #enviar.parar { background: var(--texto); }
+
+    /* Panel de seguridad */
+    .panel-seguridad {
+      width: 340px;
+      flex-shrink: 0;
+      border-left: 1px solid var(--borde);
+      overflow-y: auto;
+      padding: 24px 22px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      font-size: 13px;
+    }
+    .seg-titulo {
+      color: var(--suave);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .seg-lista { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .seg-fila { display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+    .seg-marca {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+      background: var(--suave);
+    }
+    .seg-fila.bien .seg-marca { background: var(--bien); }
+    .seg-fila.mal .seg-marca { background: var(--mal); }
+    .seg-fila.mal { color: var(--mal); }
+
+    .seg-contadores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .seg-contador {
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .seg-numero { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .seg-etiqueta { color: var(--suave); font-size: 11px; }
+    .seg-contador.seg-bloqueado .seg-numero { color: var(--acento); }
+    .seg-contador.seg-error .seg-numero { color: var(--mal); }
+    .seg-contador.seg-alta .seg-numero { color: var(--acento); }
+
+    .seg-conexiones { list-style: none; margin-top: 14px; display: flex; flex-direction: column; }
+    .seg-conexion { padding: 10px 0; border-top: 1px solid var(--borde); }
+    .seg-conexion-cabeza { display: flex; justify-content: space-between; align-items: center; }
+    .seg-resultado { font-size: 11px; font-weight: 600; color: var(--suave); }
+    .seg-resultado.seg-ok { color: var(--bien); }
+    .seg-resultado.seg-bloqueado { color: var(--acento); }
+    .seg-resultado.seg-error { color: var(--mal); }
+    .seg-resultado.seg-alta { color: var(--acento); }
+    .seg-hora { color: var(--suave); font-size: 11px; font-variant-numeric: tabular-nums; }
+    .seg-url {
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      margin-top: 4px;
+      word-break: break-all;
+    }
+    .seg-detalle { color: var(--suave); font-size: 12px; margin-top: 2px; }
+    .seg-vacio { color: var(--suave); margin-top: 14px; }
+
+    .seg-plegable summary {
+      color: var(--suave);
+      cursor: pointer;
+      user-select: none;
+    }
+    .seg-plegable summary:hover { color: var(--acento); }
+    .seg-plegable .seg-lista { margin-top: 10px; gap: 6px; }
+    .seg-sitio {
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 11px;
+      word-break: break-all;
+    }
+
+    .seg-hallazgo {
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-left: 2px solid var(--acento);
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.5;
+    }
+    .seg-hallazgo + .seg-hallazgo { margin-top: 8px; }
+    .seg-hallazgo-cabeza { display: flex; justify-content: space-between; gap: 8px; color: var(--suave); font-size: 11px; }
+    .seg-hallazgo-titulo { font-weight: 600; margin-top: 4px; }
+    .seg-hallazgo-detalle { color: var(--suave); margin-top: 4px; }
+
+    /* Conversaciones guardadas */
+    .seg-conversaciones { list-style: none; margin-top: 10px; display: flex; flex-direction: column; }
+    .seg-conversacion { padding: 10px 0; border-top: 1px solid var(--borde); line-height: 1.5; }
+    .seg-conversacion.actual .seg-conv-titulo { color: var(--acento); }
+    .seg-conv-titulo { word-break: break-word; }
+    .seg-conv-fecha { color: var(--suave); font-size: 11px; font-variant-numeric: tabular-nums; }
+    .seg-conv-botones { display: flex; gap: 14px; margin-top: 4px; }
+    .seg-conv-botones button {
+      background: none;
+      border: none;
+      color: var(--suave);
+      font: inherit;
+      font-size: 12px;
+      padding: 0;
+      cursor: pointer;
+    }
+    .seg-conv-botones button:hover { color: var(--acento); }
+    .seg-conv-botones button.peligro { color: var(--mal); }
+
+    /* Memoria */
+    .mem-cifras { display: flex; justify-content: space-between; gap: 8px; font-variant-numeric: tabular-nums; }
+    #mem-datos { color: var(--suave); font-size: 12px; }
+    .mem-barra { height: 4px; background: var(--borde); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+    .mem-relleno { height: 100%; width: 0; background: var(--bien); transition: width 0.3s; }
+    .mem-relleno.aviso { background: var(--acento); }
+    .mem-relleno.lleno { background: var(--mal); }
+    .mem-bloque { margin-top: 14px; }
+    .mem-nota { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .mem-nota input, .mem-nota textarea {
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: 8px;
+      color: var(--texto);
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 8px 10px;
+      outline: none;
+      flex: none;
+      max-height: none;
+      resize: vertical;
+    }
+    .mem-nota input:focus, .mem-nota textarea:focus { border-color: var(--suave); }
+    .seg-conv-botones button:disabled { opacity: 0.5; cursor: default; }
+
+    /* Biblioteca */
+    #bib-mb { color: var(--suave); font-size: 12px; }
+    #bib-mb:not(:empty)::before { content: " · "; }
+    .bib-cambios { margin-top: 12px; display: flex; flex-direction: column; }
+    .bib-artefacto { padding: 10px 0; border-top: 1px solid var(--borde); line-height: 1.5; }
+    .bib-cifras { color: var(--suave); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .bib-ejemplos { list-style: none; margin-top: 4px; color: var(--suave); font-size: 12px; }
+    .bib-ejemplos li { word-break: break-word; }
+    .bib-ejemplos li::before { content: "· "; }
+    .bib-error { color: var(--mal); font-size: 12px; margin-top: 8px; line-height: 1.5; }
+    .bib-aviso { color: var(--suave); font-size: 12px; margin-top: 10px; line-height: 1.5; }
+
+    /* En ventanas estrechas el panel se pone encima del chat */
+    @media (max-width: 760px) {
+      .cuerpo { position: relative; }
+      .panel-seguridad { position: absolute; inset: 0; width: auto; background: var(--fondo); border-left: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="marca">RAM535</span>
+    <div class="lado">
+      <span class="estado"><span class="punto activo" id="punto"></span><span id="estado-texto">Conectando</span></span>
+      <button type="button" class="boton-suave" id="seguridad" aria-expanded="false" aria-controls="panel-seguridad"><span class="punto-seguridad" id="punto-seguridad"></span>Seguridad</button>
+      <button type="button" class="boton-suave" id="guardar-conversacion">Guardar conversación</button>
+      <button type="button" class="boton-suave" id="nueva">Nueva conversación</button>
+    </div>
+  </header>
+
+  <div class="cuerpo">
+  <div class="chat">
+  <main id="conversacion">
+    <div class="bienvenida" id="bienvenida">
+      <h1>-.-</h1>
+    </div>
+  </main>
+
+  <footer>
+    <form class="entrada" id="formulario">
+      <textarea id="caja" rows="1" maxlength="8000" disabled></textarea>
+      <button type="submit" id="enviar" disabled aria-label="Enviar"><svg id="icono-enviar" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg><svg id="icono-parar" hidden width="14" height="14" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="currentColor"/></svg></button>
+    </form>
+  </footer>
+  </div>
+
+  <aside class="panel-seguridad" id="panel-seguridad" aria-label="Panel de seguridad" hidden>
+    <section>
+      <h2 class="seg-titulo">Conversaciones guardadas</h2>
+      <details class="seg-plegable">
+        <summary id="seg-total-conversaciones">Cargando</summary>
+        <ul class="seg-conversaciones" id="seg-conversaciones"></ul>
+      </details>
+    </section>
+
+    <section>
+      <h2 class="seg-titulo">Biblioteca</h2>
+      <details class="seg-plegable">
+        <summary><span id="bib-total">Cargando</span><span id="bib-mb"></span></summary>
+        <ul class="seg-conversaciones" id="bib-archivos"></ul>
+        <div class="seg-conv-botones mem-bloque">
+          <button type="button" id="bib-revisar">Revisar archivos</button>
+        </div>
+        <div id="bib-revision"></div>
+      </details>
+    </section>
+
+    <section>
+      <h2 class="seg-titulo">Memoria</h2>
+      <div class="mem-cifras"><span id="mem-mb">Cargando</span><span id="mem-datos"></span></div>
+      <div class="mem-barra"><div class="mem-relleno" id="mem-relleno"></div></div>
+      <details class="seg-plegable mem-bloque">
+        <summary>Gestionar memoria</summary>
+        <details class="seg-plegable mem-bloque">
+          <summary id="mem-total">Últimos datos guardados</summary>
+          <ul class="seg-conversaciones" id="mem-lista"></ul>
+        </details>
+        <details class="seg-plegable mem-bloque" id="mem-nota-plegable">
+          <summary id="mem-nota-resumen">Escribir una nota</summary>
+          <div class="mem-nota">
+            <input type="text" id="nota-titulo" maxlength="300" placeholder="Título" autocomplete="off">
+            <textarea id="nota-texto" maxlength="20000" rows="5" placeholder="Tu nota"></textarea>
+            <div class="seg-conv-botones">
+              <button type="button" id="nota-guardar">Guardar nota</button>
+              <button type="button" id="nota-cancelar" hidden>Cancelar edición</button>
+            </div>
+            <p class="seg-conv-fecha" id="nota-estado"></p>
+          </div>
+        </details>
+        <div class="seg-conv-botones mem-bloque">
+          <button type="button" id="mem-optimizar">Optimizar memoria</button>
+          <button type="button" id="mem-copia">Copia de seguridad</button>
+        </div>
+        <p class="seg-conv-fecha" id="mem-optimizar-estado"></p>
+      </details>
+    </section>
+
+    <section>
+      <h2 class="seg-titulo">Exposición</h2>
+      <ul class="seg-lista" id="seg-exposicion"><li class="seg-fila"><span class="seg-marca"></span><span>Comprobando</span></li></ul>
+    </section>
+
+    <section>
+      <h2 class="seg-titulo">Conexiones de esta sesión</h2>
+      <div class="seg-contadores" id="seg-contadores"></div>
+      <p class="seg-vacio" id="seg-vacio">Todavía no ha salido nada a internet.</p>
+      <ul class="seg-conexiones" id="seg-conexiones"></ul>
+    </section>
+
+    <section>
+      <h2 class="seg-titulo">Hallazgos</h2>
+      <div id="seg-hallazgos"></div>
+    </section>
+
+    <section>
+      <h2 class="seg-titulo">Protecciones activas</h2>
+      <details class="seg-plegable">
+        <summary id="seg-total-protecciones">Cargando</summary>
+        <ul class="seg-lista" id="seg-protecciones"></ul>
+      </details>
+    </section>
+  </aside>
+  </div>
+
+  <script>__SCRIPT__</script>
+</body>
+</html>

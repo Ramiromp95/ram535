@@ -1,0 +1,30 @@
+# Plantilla de ficha de programa de bug bounty para RAM535.
+# Para un programa nuevo, copia este archivo con otro nombre (por ejemplo acme.txt)
+# y rellénalo con lo que dice la página del programa en HackerOne.
+# Los archivos que empiezan por _ no se leen, así que esta plantilla no cuenta.
+# En la cabecera y en [dentro] y [fuera], las líneas que empiezan por # son notas.
+
+nombre = Nombre del programa
+handle = nombre_en_hackerone
+url = https://hackerone.com/nombre_en_hackerone
+# Otras palabras que delatan el programa, separadas por comas (nombre de la empresa, productos).
+# Ninguna búsqueda en internet podrá llevarlas.
+palabras = Empresa, Producto
+
+[dentro]
+# Un activo por línea, tal como aparece en el alcance (In scope).
+# *.ejemplo.com vale para los subdominios, pero no siempre para ejemplo.com.
+*.ejemplo.com
+api.ejemplo.com
+
+[fuera]
+# Lo que el programa marca como fuera del alcance (Out of scope). Siempre gana a [dentro].
+blog.ejemplo.com
+
+[reglas]
+Pega aquí la política del programa. Qué está prohibido (escáneres automáticos, denegación
+de servicio, ingeniería social), límite de peticiones por segundo, cuentas de prueba,
+cabeceras que pide y si permite o pide declarar el uso de IA.
+
+[notas]
+Tus notas. Cuentas de prueba que usas, lo que ya has revisado e ideas pendientes.
