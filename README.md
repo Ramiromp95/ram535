@@ -70,6 +70,27 @@ Cada cuaderno es una única página HTML que funciona sin servidor, sin registro
 
 ## La IA
 
+### Un ejercicio diario
+
+Los cuadernos no son un trabajo terminado. Son mi cuaderno de estudio y crecen a medida que aprendo.
+
+| Cuaderno | Cómo lo trabajo |
+|---|---|
+| Dossier de Amenazas | Lo amplío a diario con los ataques, campañas y herramientas de actualidad, explicados desde el punto de vista de un threat hunter |
+| Mapa de estudio | Cada laboratorio que completo se convierte en una lección con mis apuntes |
+| Cuaderno MITRE | Lo uso para aprender los marcos de MITRE con fichas propias y lo actualizo con cada nueva versión de ATT&CK |
+| Libro de CVEs | Incorporo las vulnerabilidades relevantes y reviso su prioridad cuando cambian el EPSS o el catálogo KEV |
+
+### Cómo se retroalimentan
+
+- Los conceptos de cada laboratorio del mapa pasan al glosario del dossier.
+- Los ataques del dossier y las vulnerabilidades del libro se enlazan con sus técnicas de MITRE.
+- Los cuatro cuadernos forman la biblioteca de la IA, que cruza sus datos con fuentes oficiales.
+- Lo que descubro con la IA vuelve a los cuadernos como nuevas entradas.
+- Los cuadernos tienen secciones de repaso y test, separadas del contenido, para comprobar lo aprendido.
+
+Los cuadernos los mantengo en mi entorno de trabajo y aquí publico copias actualizadas. El historial de la carpeta `docs` refleja esa evolución.
+
 ### Para qué sirve
 
 | Modo | Qué hace |
